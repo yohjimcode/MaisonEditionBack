@@ -9,4 +9,5 @@ import org.springframework.transaction.annotation.Transactional;
 @Repository
 public interface LivreJpaRepository extends JpaRepository<LivreModel,Long> {
 
+    boolean existsByIsbn(String isbn);
 }

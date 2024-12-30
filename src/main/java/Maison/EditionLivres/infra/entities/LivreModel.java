@@ -18,18 +18,18 @@ public class LivreModel {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(name = "reference")
-    private String referenceLivre;
+    @Column(name = "isbn")
+    private String isbn;
     @Column(name = "livre")
-    private String titreLivre;
+    private String titre;
     @Column(name = "illustration")
-    private String illustrationLivre; //photo
+    private String illustration; //photo
     @Column(name = "date_parution")
     private LocalDate dateParution;
     @Column(name = "synopsis")
     private String synopsis;
     @Column(name = "prix")
-    private double prixLivre;
+    private double prix;
     @Column(name = "recommandation")
     private Long recommandation;
 

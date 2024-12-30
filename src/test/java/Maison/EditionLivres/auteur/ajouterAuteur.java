@@ -11,18 +11,19 @@ public class ajouterAuteur {
     @Given("auteur {string} n'existe pas")
     public void auteurNExistePas(String arg0) {
         AuteurModel auteur = new AuteurModel();
-        
+
 
     }
 
-
-    @When("je saisis les informations de l'auteur {string}")
-    public void jeSaisisLesInformationsDeLAuteur(String arg0) {
-
+    @When("je saisis le nouvel auteur")
+    public void jeSaisisLeNouvelAuteur() {
     }
+
 
     @Then("l'auteur {string} est ajouté avec succès")
     public void lAuteurEstAjoutéAvecSuccès(String arg0) {
 
     }
+
+
 }

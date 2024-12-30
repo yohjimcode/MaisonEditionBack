@@ -2,7 +2,9 @@ package Maison.EditionLivres.infra.entities.ref;
 
 import Maison.EditionLivres.infra.entities.LivreModel;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -10,6 +12,8 @@ import java.util.List;
 
 @Entity
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 @Table(name="refAuteur")
 public class AuteurModel {
 
