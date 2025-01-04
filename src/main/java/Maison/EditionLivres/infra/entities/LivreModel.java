@@ -18,9 +18,9 @@ public class LivreModel {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(name = "isbn")
+    @Column(name = "isbn", nullable = false)
     private String isbn;
-    @Column(name = "livre")
+    @Column(name = "livre", nullable = false)
     private String titre;
     @Column(name = "illustration")
     private String illustration; //photo
@@ -28,12 +28,24 @@ public class LivreModel {
     private LocalDate dateParution;
     @Column(name = "synopsis")
     private String synopsis;
+
     @Column(name = "prix")
     private double prix;
+    @Column(name="nombre_pages")
+    private int nbrPages;
+
     @Column(name = "recommandation")
     private Long recommandation;
 
     @ManyToOne
     @JoinColumn(name = "auteur_id")
     private AuteurModel auteur;
+
+//    @Column(name="collection")
+//    private String collection; //tab de ref
+
+//    @Column(name="public")
+//    private String publicConcerne; // modifer par une tab de referentiel
+
+    //typeProduit, format = ebook ou papier // tab de ref
 }

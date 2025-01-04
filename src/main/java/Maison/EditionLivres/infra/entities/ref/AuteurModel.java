@@ -20,10 +20,12 @@ public class AuteurModel {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    @Column(name="nom", nullable = false)
+    @Column(name="nomAuteur",nullable = false)
     private String nomAuteur;
+    @Column(name="nom")
+    private String nom;
     @Column(name="prenom")
-    private String prenomAuteur;
+    private String prenom;
     @Column(name="date_naissance")
     private LocalDate dateNaissance;
     @Column(name = "photo_auteur")
@@ -34,6 +36,8 @@ public class AuteurModel {
     private String siteAuteur;
     @Column(name = "email_Auteur")
     private String emailAuteur;
+    @Column(name = "actif")
+    private boolean isActif;
 
     @OneToMany(mappedBy = "auteur")
     private List<LivreModel> livres = new ArrayList<>();
