@@ -2,6 +2,7 @@ package Maison.EditionLivres.infra.entities;
 
 
 import Maison.EditionLivres.infra.entities.ref.AuteurModel;
+import Maison.EditionLivres.infra.entities.ref.CollectionModel;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -9,8 +10,10 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 
-@Entity
 @Data
+@Entity
+//@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+//@DiscriminatorColumn(name = "FORMAT_LIVRE", discriminatorType = DiscriminatorType.STRING)
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "LIVRES")
@@ -18,34 +21,38 @@ public class LivreModel {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(name = "isbn", nullable = false)
+    @Column(name = "ISBN", nullable = false)
     private String isbn;
-    @Column(name = "livre", nullable = false)
+    @Column(name = "TITRE", nullable = false)
     private String titre;
-    @Column(name = "illustration")
+    @Column(name = "ILLUSTRATION")
     private String illustration; //photo
-    @Column(name = "date_parution")
+    @Column(name = "DATE_PARUTION")
     private LocalDate dateParution;
-    @Column(name = "synopsis")
+    @Column(name = "SYNOPSIS")
     private String synopsis;
-
-    @Column(name = "prix")
+    @Column(name = "PRIX")
     private double prix;
-    @Column(name="nombre_pages")
+    @Column(name="NOMBRE_PAGES")
     private int nbrPages;
 
-    @Column(name = "recommandation")
-    private Long recommandation;
+    @ManyToOne
+    @JoinColumn(name = "AUTEUR_ID")
+    private AuteurModel auteur; //Peuvent etre plusieurs auteurs
 
     @ManyToOne
-    @JoinColumn(name = "auteur_id")
-    private AuteurModel auteur;
+    @JoinColumn(name = "COLLECTION_ID")
+    private CollectionModel collection;
 
-//    @Column(name="collection")
-//    private String collection; //tab de ref
+    @Enumerated(EnumType.STRING)
+    private Categorie categorie;
 
-//    @Column(name="public")
-//    private String publicConcerne; // modifer par une tab de referentiel
+    public enum Categorie {
+        MATERNELLE,
+        PRIMAIRE,
+        COLLEGE
+    }
 
-    //typeProduit, format = ebook ou papier // tab de ref
+    //format numeric et/ou physique
+
 }

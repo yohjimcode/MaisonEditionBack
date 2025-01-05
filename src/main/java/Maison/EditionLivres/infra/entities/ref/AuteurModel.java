@@ -20,25 +20,25 @@ public class AuteurModel {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    @Column(name="nomAuteur",nullable = false)
+    @Column(name="NOM_AUTEUR",nullable = false)
     private String nomAuteur;
-    @Column(name="nom")
+    @Column(name="NOM")
     private String nom;
-    @Column(name="prenom")
+    @Column(name="PRENOM")
     private String prenom;
-    @Column(name="date_naissance")
+    @Column(name="DATE_NAISSANCE")
     private LocalDate dateNaissance;
-    @Column(name = "photo_auteur")
+    @Column(name = "PHOTO_AUTEUR")
     private String photoAuteur;
-    @Column(name = "biographie", columnDefinition = "TEXT")
+    @Column(name = "BIOGRAPHIE", columnDefinition = "TEXT")
     private String biographieAuteur;
-    @Column(name = "site_social")
+    @Column(name = "SOCIAL")
     private String siteAuteur;
-    @Column(name = "email_Auteur")
+    @Column(name = "EMAIL")
     private String emailAuteur;
-    @Column(name = "actif")
+    @Column(name = "ACTIF")
     private boolean isActif;
 
-    @OneToMany(mappedBy = "auteur")
+    @OneToMany(mappedBy = "AUTEUR")
     private List<LivreModel> livres = new ArrayList<>();
 }
