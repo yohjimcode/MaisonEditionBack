@@ -1,14 +1,21 @@
 package Maison.EditionLivres.infra.entities.ref;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import Maison.EditionLivres.infra.entities.LivreModel;
+import jakarta.persistence.*;
 import jakarta.transaction.Transactional;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.stereotype.Repository;
 
-@Repository
-@Transactional
+import java.util.ArrayList;
+import java.util.List;
+
+@Entity
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+@Table(name="refCollection")
 public class CollectionModel {
 
     @Id
@@ -16,5 +23,8 @@ public class CollectionModel {
     private int id;
     @Column(name="NOM_COLLECTION")
     private String nomCollection;
+
+    @OneToMany(mappedBy = "collection")
+    private List<LivreModel> livres = new ArrayList<>();
 
 }

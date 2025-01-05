@@ -39,6 +39,8 @@ public class AuteurModel {
     @Column(name = "ACTIF")
     private boolean isActif;
 
-    @OneToMany(mappedBy = "AUTEUR")
+    //cascade -> Les opérations effectuées sur un auteur (ex. suppression) se répercuteront sur ses livres associés.
+    //orphanRemoval -> Si un livre est retiré de la liste livres, il sera également supprimé de la base de données.
+    @OneToMany(mappedBy = "auteur", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<LivreModel> livres = new ArrayList<>();
 }
