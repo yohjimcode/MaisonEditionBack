@@ -1,6 +1,7 @@
 package Maison.EditionLivres.infra.entities.ref;
 
 import Maison.EditionLivres.infra.entities.LivreModel;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -14,7 +15,7 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name="refAuteur")
+@Table(name="REF_AUTEUR")
 public class AuteurModel {
 
     @Id
@@ -39,8 +40,7 @@ public class AuteurModel {
     @Column(name = "ACTIF")
     private boolean isActif;
 
-    //cascade -> Les opérations effectuées sur un auteur (ex. suppression) se répercuteront sur ses livres associés.
-    //orphanRemoval -> Si un livre est retiré de la liste livres, il sera également supprimé de la base de données.
-    @OneToMany(mappedBy = "auteur", cascade = CascadeType.ALL, orphanRemoval = true)
+    @ManyToMany(mappedBy = "auteurs") // Correspond à : Set<AuteurModel> auteurs dans livreModel
+    @JsonBackReference
     private List<LivreModel> livres = new ArrayList<>();
 }

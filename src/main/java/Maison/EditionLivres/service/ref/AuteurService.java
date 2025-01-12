@@ -5,6 +5,10 @@ import Maison.EditionLivres.infra.entities.ref.AuteurModel;
 import Maison.EditionLivres.rest.dto.ref.AuteurDto;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
+import static org.antlr.v4.runtime.tree.xpath.XPath.findAll;
+
 @Service
 public class AuteurService {
 
@@ -28,8 +32,11 @@ public class AuteurService {
         nouvelAuteur.setSiteAuteur(auteurDto.getSiteAuteur());
         nouvelAuteur.setEmailAuteur(auteurDto.getEmailAuteur());
         nouvelAuteur.setActif(auteurDto.isActif());
-        nouvelAuteur.setLivres(auteurDto.getLivres());
 
         return auteurJpaRepository.save(nouvelAuteur);
+    }
+
+    public List<AuteurModel> getAllAuteurs() {
+        return auteurJpaRepository.findAll();
     }
 }

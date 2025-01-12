@@ -15,7 +15,7 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name="refCollection")
+@Table(name="REF_COLLECTION")
 public class CollectionModel {
 
     @Id

@@ -12,27 +12,31 @@ import org.antlr.v4.runtime.misc.NotNull;
 
 import java.time.LocalDate;
 import java.util.Date;
+import java.util.List;
 
 @Data
-@AllArgsConstructor
-@NoArgsConstructor
 public class LivreDto {
 
     private Long id;
-
-    @NotBlank(message = "isbn obligatoire")
     private String isbn;
-
-    @NotBlank(message = "titre obligatoire")
     private String titre;
-
     private String illustration; //photo
-    private LocalDate dateParution;
     private String synopsis;
-    private double prix;
-    private int nbrPages;
+    private List<Integer> auteursId; //ManyToMany
+    private Long collectionId;
+    private String categorie; //Enum to String
+    private String typeLivre;
 
-    private AuteurModel auteur;
+    // livre numérique
+    private LocalDate dateParutionNumerique;
+    private Double prixNumerique;
+    private Integer nbrPagesNumerique;
+
+    // livre physique
+    private LocalDate dateParutionPhysique;
+    private Double prixPhysique;
+    private Integer nbrPagesPhysique;
+
 }
 
 

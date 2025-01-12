@@ -3,11 +3,15 @@ package Maison.EditionLivres.service;
 import Maison.EditionLivres.infra.adaptaters.LivreJpaRepository;
 import Maison.EditionLivres.infra.adaptaters.ref.AuteurJpaRepository;
 import Maison.EditionLivres.infra.entities.LivreModel;
+import Maison.EditionLivres.infra.entities.LivreNumerique;
+import Maison.EditionLivres.infra.entities.LivrePhysique;
 import Maison.EditionLivres.infra.entities.ref.AuteurModel;
 import Maison.EditionLivres.rest.dto.LivreDto;
 import org.springframework.stereotype.Service;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 
 @Service
@@ -17,31 +21,61 @@ public class LivreService {
 
     private final AuteurJpaRepository auteurJpaRepository;
 
+    LivreModel livreModel;
+
+
     public LivreService(LivreJpaRepository livreJpaRepository, AuteurJpaRepository auteurJpaRepository) {
 
         this.livreJpaRepository = livreJpaRepository;
         this.auteurJpaRepository = auteurJpaRepository;
     }
 
-    public LivreModel addLivre(LivreDto livreDto) {
+    public void addLivre(LivreDto livreDto) {
 
-        AuteurModel auteur = auteurJpaRepository.findById(livreDto.getAuteur().getId())
-                .orElseThrow(() -> new IllegalArgumentException("Auteur introuvable avec l'ID : " + livreDto.getAuteur().getId()));
-
-        if(livreJpaRepository.existsByIsbn(livreDto.getIsbn())){
-           throw new IllegalArgumentException("Isbn déja présent");
+        if (livreJpaRepository.existsByIsbn(livreDto.getIsbn())) {
+            throw new IllegalArgumentException("Isbn déja présent");
         }
 
-        LivreModel nouveauLivre =  new LivreModel();
-        nouveauLivre.setIsbn(livreDto.getIsbn());
-        nouveauLivre.setTitre(livreDto.getTitre());
-        nouveauLivre.setIllustration(livreDto.getIllustration());
-        nouveauLivre.setSynopsis(livreDto.getSynopsis());
-        nouveauLivre.setPrix(livreDto.getPrix());
-        nouveauLivre.setDateParution(livreDto.getDateParution());
-        nouveauLivre.setNbrPages(livreDto.getNbrPages());
-        nouveauLivre.setAuteur(auteur);
+        if (livreDto.getTypeLivre().equalsIgnoreCase("NUMERIQUE")) {
+            LivreNumerique livreNumerique = new LivreNumerique();
+            livreNumerique.setDateParutionNumerique(livreDto.getDateParutionNumerique());
+            livreNumerique.setPrixNumerique(livreDto.getPrixNumerique());
+            livreNumerique.setNbrPagesNumerique(livreDto.getNbrPagesNumerique());
+            livreModel = livreNumerique;
+        } else if (livreDto.getTypeLivre().equalsIgnoreCase("PHYSIQUE")) {
+            LivrePhysique livrePhysique = new LivrePhysique();
+            livrePhysique.setDateParutionPhysique(livreDto.getDateParutionPhysique());
+            livrePhysique.setNbrPagesPhysique(livreDto.getNbrPagesPhysique());
+            livrePhysique.setNbrPagesPhysique(livreDto.getNbrPagesPhysique());
+            livreModel = livrePhysique;
+        }
 
-        return livreJpaRepository.save(nouveauLivre);
+        livreModel.setIsbn(livreDto.getIsbn());
+        livreModel.setTitre(livreDto.getTitre());
+        livreModel.setIllustration(livreDto.getIllustration());
+        livreModel.setSynopsis(livreDto.getSynopsis());
+        livreModel.setCategorie(LivreModel.Categorie.valueOf(livreDto.getCategorie().toUpperCase()));
+
+        List<Integer> auteursIds = livreDto.getAuteursId();
+        Set<AuteurModel> auteurs = new HashSet<>(auteurJpaRepository.findAllById(auteursIds));
+        if (auteurs.size() != auteursIds.size()) {
+            throw new IllegalArgumentException("Certains auteurs fournis ne sont pas valides.");
+        }
+        livreModel.setAuteurs(auteurs);
+
+        livreJpaRepository.save(livreModel);
+    }
+
+    public List<LivreModel> getAllLivre() {
+        return livreJpaRepository.findAll();
+    }
+
+
+    public void deleteLivre(Long id) {
+        livreJpaRepository.deleteById(id);
+    }
+
+    public void getLivrebyId(Long id) {
+        livreJpaRepository.findById(id);
     }
 }
