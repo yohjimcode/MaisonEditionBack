@@ -7,10 +7,12 @@ import Maison.EditionLivres.infra.entities.LivreNumerique;
 import Maison.EditionLivres.infra.entities.LivrePhysique;
 import Maison.EditionLivres.infra.entities.ref.AuteurModel;
 import Maison.EditionLivres.rest.dto.LivreDto;
+import Maison.EditionLivres.service.mappers.LivreMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 
@@ -18,19 +20,21 @@ import java.util.Set;
 public class LivreService {
 
     private final LivreJpaRepository livreJpaRepository;
-
     private final AuteurJpaRepository auteurJpaRepository;
+
+    private final LivreMapper livreMapper;
 
     LivreModel livreModel;
 
 
-    public LivreService(LivreJpaRepository livreJpaRepository, AuteurJpaRepository auteurJpaRepository) {
+    public LivreService(LivreJpaRepository livreJpaRepository, AuteurJpaRepository auteurJpaRepository, LivreMapper livreMapper) {
 
         this.livreJpaRepository = livreJpaRepository;
         this.auteurJpaRepository = auteurJpaRepository;
+        this.livreMapper = livreMapper;
     }
 
-    public void addLivre(LivreDto livreDto) {
+    public LivreDto addLivre(LivreDto livreDto) {
 
         if (livreJpaRepository.existsByIsbn(livreDto.getIsbn())) {
             throw new IllegalArgumentException("Isbn déja présent");
@@ -63,19 +67,25 @@ public class LivreService {
         }
         livreModel.setAuteurs(auteurs);
 
-        livreJpaRepository.save(livreModel);
+        LivreModel savelivre = livreJpaRepository.save(livreModel);
+
+        return livreMapper.toDto(savelivre);
     }
 
-    public List<LivreModel> getAllLivre() {
-        return livreJpaRepository.findAll();
+    public List<LivreDto> getAllLivre() {
+        return livreMapper.toDtoList(livreJpaRepository.findAll());
     }
 
+    public Optional<LivreDto> getLivrebyId(Long id) {
+        return livreJpaRepository.findById(id).map(livreMapper::toDto);
+    }
 
-    public void deleteLivre(Long id) {
+    public LivreDto deleteLivre(Long id) {
+        LivreModel deleteLivre = livreJpaRepository.findById(id)
+                .orElseThrow(()->new IllegalArgumentException("le Livre n'existe pas "));
         livreJpaRepository.deleteById(id);
+        return livreMapper.toDto(deleteLivre);
     }
 
-    public void getLivrebyId(Long id) {
-        livreJpaRepository.findById(id);
-    }
+
 }

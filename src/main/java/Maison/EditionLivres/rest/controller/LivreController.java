@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping()
+@RequestMapping("livre")
 public class LivreController {
 
     private final LivreService livreService;
@@ -20,23 +20,27 @@ public class LivreController {
         this.livreService = livreService;
     }
 
-    @PostMapping("/livre")
-    void addLivre(@RequestBody LivreDto livreDto){
-        livreService.addLivre(livreDto);
+    @PostMapping
+    public ResponseEntity<LivreDto> addLivre(@RequestBody LivreDto livreDto){
+        LivreDto livre = livreService.addLivre(livreDto);
+        return ResponseEntity.status(HttpStatus.CREATED).body(livre);
     }
 
-    @GetMapping ("/livres")
-    List<LivreModel> getAllLivres(){
-        return livreService.getAllLivre().stream().toList();
+    @GetMapping
+    public ResponseEntity<List<LivreDto>> getAllLivres() {
+        List<LivreDto> livres = livreService.getAllLivre();
+        return ResponseEntity.ok(livres);
     }
 
-    @GetMapping ("/livre/{id}")
-    void getLivre (@RequestParam Long id){
-        livreService.getLivrebyId(id);
+    @GetMapping ("{id}")
+    public ResponseEntity<LivreDto> getLivre(@PathVariable Long id){
+        LivreDto livre = livreService.getLivrebyId(id).orElseThrow();
+        return ResponseEntity.ok(livre);
     }
 
-    @DeleteMapping("/livre/{id}")
-    void deleteLivre(@RequestParam Long id){
-        livreService.deleteLivre(id);
+    @DeleteMapping("{id}")
+    public ResponseEntity<LivreDto> deleteLivre(@PathVariable Long id){
+        LivreDto livreSupprime = livreService.deleteLivre(id);
+        return ResponseEntity.ok(livreSupprime);
     }
 }
