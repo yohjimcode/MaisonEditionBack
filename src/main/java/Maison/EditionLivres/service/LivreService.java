@@ -8,6 +8,7 @@ import Maison.EditionLivres.infra.entities.LivrePhysique;
 import Maison.EditionLivres.infra.entities.ref.AuteurModel;
 import Maison.EditionLivres.rest.dto.LivreDto;
 import Maison.EditionLivres.service.mappers.LivreMapper;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
@@ -61,21 +62,26 @@ public class LivreService {
         livreModel.setCategorie(LivreModel.Categorie.valueOf(livreDto.getCategorie().toUpperCase()));
 
         List<Integer> auteursIds = livreDto.getAuteursId();
+        System.out.println("Auteur ajouté : " + auteursIds);
         Set<AuteurModel> auteurs = new HashSet<>(auteurJpaRepository.findAllById(auteursIds));
         if (auteurs.size() != auteursIds.size()) {
             throw new IllegalArgumentException("Certains auteurs fournis ne sont pas valides.");
         }
         livreModel.setAuteurs(auteurs);
 
+        System.out.println("Instance créée : " + livreModel.getClass().getSimpleName());
+
         LivreModel savelivre = livreJpaRepository.save(livreModel);
 
         return livreMapper.toDto(savelivre);
     }
 
+    @Transactional
     public List<LivreDto> getAllLivre() {
         return livreMapper.toDtoList(livreJpaRepository.findAll());
     }
 
+    @Transactional
     public Optional<LivreDto> getLivrebyId(Long id) {
         return livreJpaRepository.findById(id).map(livreMapper::toDto);
     }
@@ -86,6 +92,4 @@ public class LivreService {
         livreJpaRepository.deleteById(id);
         return livreMapper.toDto(deleteLivre);
     }
-
-
 }

@@ -3,6 +3,7 @@ package Maison.EditionLivres.infra.entities;
 
 import Maison.EditionLivres.infra.entities.ref.AuteurModel;
 import Maison.EditionLivres.infra.entities.ref.CollectionModel;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -34,13 +35,14 @@ public abstract class LivreModel {
     private String illustration; //photo
     @Column(name = "SYNOPSIS")
     private String synopsis;
+
     @ManyToMany
     @JoinTable(
             name = "LIVRE_AUTEUR",
             joinColumns = @JoinColumn(name = "LIVRE_ID"),
             inverseJoinColumns = @JoinColumn(name = "AUTEUR_ID")
     ) //Set ne permet pas les doublons
-    @JsonManagedReference
+    @JsonIgnore
     private Set<AuteurModel> auteurs = new HashSet<>();
 
     @ManyToOne

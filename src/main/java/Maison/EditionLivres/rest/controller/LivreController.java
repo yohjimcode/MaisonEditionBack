@@ -3,6 +3,7 @@ package Maison.EditionLivres.rest.controller;
 import Maison.EditionLivres.infra.entities.LivreModel;
 import Maison.EditionLivres.rest.dto.LivreDto;
 import Maison.EditionLivres.service.LivreService;
+import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
