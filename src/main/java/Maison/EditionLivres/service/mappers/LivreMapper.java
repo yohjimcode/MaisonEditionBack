@@ -1,4 +1,5 @@
 package Maison.EditionLivres.service.mappers;
+
 import Maison.EditionLivres.infra.entities.LivreModel;
 import Maison.EditionLivres.infra.entities.LivreNumerique;
 import Maison.EditionLivres.infra.entities.LivrePhysique;
@@ -15,7 +16,6 @@ import java.util.stream.Collectors;
 
 @Mapper(componentModel = "spring")
 public interface LivreMapper {
-
 
     @Mapping(target = "auteursId", source = "auteurs", qualifiedByName = "mapAuteursToIds")
     @Mapping(target = "dateParutionNumerique", expression = "java(mapDateParutionNumerique(livreModel))")
@@ -37,29 +37,45 @@ public interface LivreMapper {
         return auteurs.stream().map(AuteurModel::getId).collect(Collectors.toList());
     }
 
-    // 🔥 Gestion des champs spécifiques aux livres numériques
     default LocalDate mapDateParutionNumerique(LivreModel livre) {
-        return (livre instanceof LivreNumerique) ? ((LivreNumerique) livre).getDateParutionNumerique() : null;
+        if (livre instanceof LivreNumerique numerique) {
+            return numerique.getDateParutionNumerique();
+        }
+        return null;
     }
 
     default Double mapPrixNumerique(LivreModel livre) {
-        return (livre instanceof LivreNumerique) ? ((LivreNumerique) livre).getPrixNumerique() : null;
+        if (livre instanceof LivreNumerique numerique){
+            return numerique.getPrixNumerique();
+        }
+      return null;
     }
 
     default Integer mapNbrPagesNumerique(LivreModel livre) {
-        return (livre instanceof LivreNumerique) ? ((LivreNumerique) livre).getNbrPagesNumerique() : null;
+        if (livre instanceof LivreNumerique numerique){
+            return numerique.getNbrPagesNumerique();
+        }
+        return null;
     }
 
-    // 🔥 Gestion des champs spécifiques aux livres physiques
     default LocalDate mapDateParutionPhysique(LivreModel livre) {
-        return (livre instanceof LivrePhysique) ? ((LivrePhysique) livre).getDateParutionPhysique() : null;
+        if (livre instanceof LivrePhysique physique){
+            return physique.getDateParutionPhysique();
+        }
+        return null;
     }
 
     default Double mapPrixPhysique(LivreModel livre) {
-        return (livre instanceof LivrePhysique) ? ((LivrePhysique) livre).getPrixPhysique() : null;
+       if (livre instanceof LivrePhysique physique) {
+           return physique.getPrixPhysique();
+       }
+       return null;
     }
 
     default Integer mapNbrPagesPhysique(LivreModel livre) {
-        return (livre instanceof LivrePhysique) ? ((LivrePhysique) livre).getNbrPagesPhysique() : null;
+        if(livre instanceof LivrePhysique physique){
+            return physique.getNbrPagesPhysique();
+        }
+        return null;
     }
 }

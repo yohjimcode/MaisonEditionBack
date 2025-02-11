@@ -2,11 +2,9 @@ package Maison.EditionLivres.infra.entities.ref;
 
 import Maison.EditionLivres.infra.entities.LivreModel;
 import jakarta.persistence.*;
-import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
 import java.util.List;
