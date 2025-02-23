@@ -17,6 +17,14 @@ import java.util.stream.Collectors;
 @Mapper(componentModel = "spring")
 public interface LivreMapper {
 
+    /**
+     *
+     *
+     * PAS UTILISER POUR LE MOMENT
+     * @param livreModel
+     * @return
+     */
+
     @Mapping(target = "auteursId", source = "auteurs", qualifiedByName = "mapAuteursToIds")
     @Mapping(target = "dateParutionNumerique", expression = "java(mapDateParutionNumerique(livreModel))")
     @Mapping(target = "prixNumerique", expression = "java(mapPrixNumerique(livreModel))")

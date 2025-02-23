@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping()
+@RequestMapping("auteur")
 public class AuteurController {
 
     private final AuteurService auteurService;
@@ -21,14 +21,23 @@ public class AuteurController {
         this.auteurService = auteurService;
     }
 
-    @PostMapping ("/auteurs")
+    @PostMapping
     void addAuteur(@RequestBody @Valid AuteurDto auteurDto){
         auteurService.addAuteur(auteurDto);
     }
 
-    @GetMapping ("/auteurs")
-    List<AuteurModel> getAllAuteurs(){
-        return auteurService.getAllAuteurs();
+    @GetMapping
+    public ResponseEntity<List<AuteurModel>> getAllAuteurs(){
+        List<AuteurDto> auteurs = auteurService.getAllAuteurs();
+        return ResponseEntity.ok(auteurs);
     }
+
+    /*
+        @GetMapping
+    public ResponseEntity<List<LivreDto>> getAllLivres() {
+        List<LivreDto> livres = livreService.getAllLivre();
+        return ResponseEntity.ok(livres);
+    }
+     */
 
 }

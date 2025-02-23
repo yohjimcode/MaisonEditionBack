@@ -22,5 +22,5 @@ public class AuteurDto {
     private String siteAuteur;
     private String emailAuteur;
     private boolean isActif;
-//    private List<LivreModel> livres = new ArrayList<>();
+    private List<LivreModel> livres = new ArrayList<>();
 }
